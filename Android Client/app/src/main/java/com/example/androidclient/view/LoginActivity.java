@@ -24,14 +24,14 @@ public class LoginActivity extends AppCompatActivity {
         txtUsuario = (EditText) findViewById(R.id.xetUsuario);
         txtPassword = (EditText) findViewById(R.id.xetPassword);
         btnLogin = (Button) findViewById(R.id.xbnLogin);
-        //btnLogin.setOnClickListener( setListener( HomeActivity.class ) );
+        btnLogin.setOnClickListener( setListener( HomeActivity.class ) );
     }
 
     private View.OnClickListener setListener(final Class<?> clase){
         return new View.OnClickListener() {
             public void onClick(View v) {
                 String nombreUsuario = txtUsuario.getText().toString();
-                String passwordUsuario = txtUsuario.getText().toString();
+                String passwordUsuario = txtPassword.getText().toString();
                 Usuario usuario = new Usuario(nombreUsuario, passwordUsuario);
                 Intent itn = new Intent(LoginActivity.this, clase);
                 itn.putExtra("nombreUsuario", nombreUsuario);
