@@ -13,10 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.UsuarioFormActivity"></activity>
+        <activity android:name=".view.PostFormActivity" />
         <activity
             android:name=".view.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.WebViewActivity" />
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".MainActivity">

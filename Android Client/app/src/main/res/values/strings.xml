@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">Android Client</string>
     <string name="title_activity_home">HomeActivity</string>
+    <!-- labels Activity  Login -->
+    <string name="label_btn_login">Iniciar Sesión</string>
+    <string name="label_btn_sigin">Registrarse</string>
+    <!-- lables menu home  -->
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Post %1$d</string>
+    <!-- lables tags  -->
     <string name="tab_text_home">Home</string>
     <string name="tab_text_java">Java</string>
     <string name="tab_text_android">Android</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Post %1$d</string>
+    <!-- lables usurio form  -->
+    <string name="label_nombre">Nombre</string>
+    <string name="label_apellido">Apellido</string>
+    <string name="label_correo">Correo</string>
+    <string name="label_password">Password</string>
+    <!-- lables post form  -->
+    <string name="label_titulo">Titulo</string>
+    <string name="label_resumen">Resumen</string>
+    <string name="label_contenido">Contenido</string>
 </resources>

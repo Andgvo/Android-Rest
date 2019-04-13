@@ -9,5 +9,17 @@
         <item name="colorSecondary">#266CDA</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="colorError">#F44336</item>
+        <!-- Buttons color -->
+        <item name="android:buttonStyle">@style/ButtonColor</item>
+    </style>
+
+    <style name="ButtonColor" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:padding">@dimen/button_intern_padding_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/button_margin </item>
+        <item name="android:elevation">@dimen/button_elevation</item>
+        <item name="android:radius">@dimen/button_radios</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 </resources>

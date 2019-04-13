@@ -1,5 +1,6 @@
 package com.example.androidclient.view;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
@@ -67,13 +69,15 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(setListener( PostFormActivity.class ));
+        /*
+            new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        }*/
 
     }
 
@@ -98,6 +102,16 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private View.OnClickListener setListener(final Class<?> clase){
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent itn = new Intent(HomeActivity.this, clase);
+                //itn.putExtra("urlServidor",etUrl.getText().toString());
+                startActivity(itn);
+            }
+        };
     }
 
     /**

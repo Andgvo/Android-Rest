@@ -15,6 +15,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtUsuario;
     private EditText txtPassword;
     private Button btnLogin;
+    private Button btnSignin;
 
 
     @Override
@@ -24,7 +25,9 @@ public class LoginActivity extends AppCompatActivity {
         txtUsuario = (EditText) findViewById(R.id.xetUsuario);
         txtPassword = (EditText) findViewById(R.id.xetPassword);
         btnLogin = (Button) findViewById(R.id.xbnLogin);
+        btnSignin = (Button) findViewById(R.id.xbnSignin);
         btnLogin.setOnClickListener( setListener( HomeActivity.class ) );
+        btnSignin.setOnClickListener( setListener( UsuarioFormActivity.class ) );
     }
 
     private View.OnClickListener setListener(final Class<?> clase){

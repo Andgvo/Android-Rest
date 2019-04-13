@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PostDAO implements DAO<Post> {
     private AyudanteBaseDeDatos ayudanteBaseDeDatos;
-    private String NOMBRE_TABLA = "Post";
+    private static final String NOMBRE_TABLA = "Post";
 
     @Override
     public void create(Post Post) throws SQLException {

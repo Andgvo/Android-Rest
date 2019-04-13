@@ -23,8 +23,8 @@
                     android:id="@+id/xtvTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="19dp"
                     android:text="mensaje"/>
 
              <TextView
@@ -32,7 +32,7 @@
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:textColor="@color/colorAccent"
-                 android:textSize="10dp"
+                 android:textSize="11dp"
                  android:text="12-abr-2019"/>
 
              <TextView

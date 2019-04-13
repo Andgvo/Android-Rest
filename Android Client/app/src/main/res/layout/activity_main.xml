@@ -23,12 +23,14 @@
             android:id="@+id/xbnIrA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/button_margin"
             android:text="Ir a WebView" />
 
         <Button
             android:id="@+id/xbnIrApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/button_margin"
             android:text="Ir a App" />
     </LinearLayout>
 

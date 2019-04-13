@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AyudanteBaseDeDatos extends SQLiteOpenHelper {
     public static final String NOMBRE_BASE_DE_DATOS = "proyecto2";
-        private static final String TABLE_USUARIO =
+    private static final String TABLE_USUARIO =
                 "create table IF NOT EXISTS Usuario("+
                 "    idUsuario integer primary key,"+
                 "	nombreUsuario text not null,"+

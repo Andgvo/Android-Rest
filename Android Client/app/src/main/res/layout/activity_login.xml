@@ -26,26 +26,45 @@
             android:textAlignment="center"
             android:textSize="35dp" />
 
-        <EditText
-            android:id="@+id/xetUsuario"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Usuario"
-            android:singleLine="true" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/xetPassword"
+            <EditText
+                android:id="@+id/xetUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Usuario"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:singleLine="true" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/xetPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/xbnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ir a WebView" />
+            android:layout_marginBottom="10dp"
+            android:text="@string/label_btn_login" />
+
+        <Button
+            android:id="@+id/xbnSignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSuccess"
+            android:text="@string/label_btn_sigin" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
