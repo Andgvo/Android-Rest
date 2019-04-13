@@ -4,6 +4,8 @@ import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -20,9 +22,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.androidclient.R;
+import com.example.androidclient.dto.Post;
+import com.example.androidclient.dto.Usuario;
+import com.example.androidclient.utilerias.AdapterPost;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private ArrayList<Post> listaPost;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -96,6 +104,8 @@ public class HomeActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+        ArrayList<Post> listaPost;
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -103,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
+            listaPost = new ArrayList<>();
         }
 
         /**
@@ -121,9 +132,21 @@ public class HomeActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            TextView textView = (TextView) rootView.findViewById(R.id.fragment_post_titulo);
+            RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
+            recyclerPost.setLayoutManager( new LinearLayoutManager(this.getContext()) );
+
+            llenarPost();
+            AdapterPost adapterPost = new AdapterPost(listaPost);
+            recyclerPost.setAdapter(adapterPost);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
+        }
+
+        private void llenarPost(){
+            for(int i = 0; i < 10 ; i++ ) {
+                listaPost.add(new Post("Post Prueba"+i, "categoria X", "Resumen x", "Contenido contenido de taget ejemplo xD. Prueba no 23", "Url x", new Usuario()));
+            }
         }
     }
 

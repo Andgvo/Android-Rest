@@ -7,17 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fragment_post_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/section_title"
+            android:layout_marginEnd="@dimen/section_title"
+            android:layout_marginBottom="@dimen/section_title"
+            android:text="Post Disponibles"
+            android:textSize="16dp"
+            tools:ignore="MissingConstraints" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/xrecyclerId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
