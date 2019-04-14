@@ -1,11 +1,13 @@
 package com.example.androidclient.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AyudanteBaseDeDatos;
+import com.example.androidclient.utilerias.DbTables;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,42 +15,65 @@ import java.util.List;
 
 public class UsuarioDAO implements DAO<Usuario> {
     private AyudanteBaseDeDatos ayudanteBaseDeDatos;
-    private String NOMBRE_TABLA = "Usuario";
 
-    @Override
-    public void create(Usuario usuario) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        ContentValues valoresParaInsertar = new ContentValues();
-        valoresParaInsertar.put("nombreUsuario", usuario.getNombreUsuario());
-        valoresParaInsertar.put("apellidoUsuario", usuario.getApellidoUsuario());
-        valoresParaInsertar.put("emailUsuario", usuario.getEmailUsuario());
-        valoresParaInsertar.put("passwordUsuario", usuario.getPasswordUsuario());
-        baseDeDatos.insert(NOMBRE_TABLA, null, valoresParaInsertar);
+    public UsuarioDAO(Context context){
+        ayudanteBaseDeDatos = new AyudanteBaseDeDatos(context);
     }
 
     @Override
-    public void update(Usuario usuario) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        ContentValues valoresParaActualizar = new ContentValues();
-        valoresParaActualizar.put("nombreUsuario", usuario.getNombreUsuario());
-        valoresParaActualizar.put("apellidoUsuario", usuario.getApellidoUsuario());
-        valoresParaActualizar.put("emailUsuario", usuario.getEmailUsuario());
-        valoresParaActualizar.put("passwordUsuario", usuario.getPasswordUsuario());
-        // where id...
-        String campoParaActualizar = "id = ?";
-        String[] argumentosParaActualizar = {String.valueOf(usuario.getIdUsuario())};
-        baseDeDatos.update(NOMBRE_TABLA, valoresParaActualizar, campoParaActualizar, argumentosParaActualizar);
+    public void create(Usuario usuario) {
+        SQLiteDatabase db;
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DbTables.USUARIO_NOMBRE, usuario.getNombreUsuario());
+            values.put(DbTables.USUARIO_APELLIDO, usuario.getApellidoUsuario());
+            values.put(DbTables.USUARIO_EMAIL, usuario.getEmailUsuario());
+            values.put(DbTables.USUARIO_PASSWORD, usuario.getPasswordUsuario());
+            db.insert(DbTables.TABLE_USUARIO, null, values);
+            db.close();
+        }catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void delete(Usuario usuario) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        String[] argumentos = {String.valueOf(usuario.getIdUsuario())};
-        baseDeDatos.delete(NOMBRE_TABLA, "id = ?", argumentos);
+    public void update(Usuario usuario) {
+        SQLiteDatabase db;
+        String[] parametrosCondicion = {String.valueOf(usuario.getIdUsuario())};
+        String condicion = DbTables.USUARIO_ID + " = ? ";
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DbTables.USUARIO_NOMBRE, usuario.getNombreUsuario());
+            values.put(DbTables.USUARIO_APELLIDO, usuario.getApellidoUsuario());
+            values.put(DbTables.USUARIO_EMAIL, usuario.getEmailUsuario());
+            values.put(DbTables.USUARIO_PASSWORD, usuario.getPasswordUsuario());
+            int affected = db.update(DbTables.TABLE_USUARIO,values,condicion,parametrosCondicion);
+            db.close();
+        }catch ( Exception ex ) {
+            ex.printStackTrace();
+            //return false;
+        }
+    }
+
+    @Override
+    public void delete(Usuario usuario) {
+        SQLiteDatabase db;
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            String[] argumentos = {String.valueOf(usuario.getIdUsuario())};
+            String condicion = DbTables.USUARIO_ID + " = ?";
+            db.delete(DbTables.TABLE_USUARIO, condicion, argumentos);
+            db.close();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public Usuario read(Usuario usuario) throws SQLException {
+        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
         return null;
     }
 
@@ -60,7 +85,7 @@ public class UsuarioDAO implements DAO<Usuario> {
         // SELECT nombre, edad, id
         String[] columnasAConsultar = {"idUsuario", "nombreUsuario", "apellidoUsuario", "emailUsuario", "passwordUsuario"};
         Cursor cursor = baseDeDatos.query(
-                NOMBRE_TABLA,//from Usuarios
+                DbTables.TABLE_USUARIO,//from Usuarios
                 columnasAConsultar,
                 null,
                 null,
@@ -99,5 +124,35 @@ public class UsuarioDAO implements DAO<Usuario> {
         // Fin del ciclo. Cerramos cursor y regresamos la lista de Usuarios :)
         cursor.close();
         return Usuarios;
+    }
+
+    public Usuario login(Usuario usuario){
+        SQLiteDatabase db = ayudanteBaseDeDatos.getReadableDatabase();
+        String[] parametrosCondicion = {usuario.getNombreUsuario(), usuario.getPasswordUsuario()};
+        String[] camposRetorno = {
+                DbTables.USUARIO_ID, DbTables.USUARIO_NOMBRE, DbTables.USUARIO_APELLIDO, DbTables.USUARIO_EMAIL, DbTables.USUARIO_PASSWORD};
+        String condicion = DbTables.USUARIO_NOMBRE + " = ? AND " + DbTables.USUARIO_PASSWORD + " = ?" ;
+        try{
+            Cursor cursor = db.query(
+                    DbTables.TABLE_USUARIO,
+                    camposRetorno,
+                    condicion,
+                    parametrosCondicion,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            usuario = new Usuario(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4));
+            return usuario;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

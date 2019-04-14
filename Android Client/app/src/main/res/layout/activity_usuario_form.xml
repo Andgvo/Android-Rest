@@ -58,10 +58,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/xetUsuarioAddCorreo"
+                    android:id="@+id/xetUsuarioAddEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/label_correo"
+                    android:hint="@string/label_email"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -76,12 +76,46 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/xbnAddPost"
+            <LinearLayout
+                android:id="@+id/xllUsuarioInsert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:text="Ir a WebView" />
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/xbnUsarioInsert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorSuccess"
+                    android:text="@string/label_insert" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/xllUsuarioUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/xbtnUsarioDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorDanger"
+                    android:text="@string/label_delete" />
+
+                <Button
+                    android:id="@+id/xbtnUsarioUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/label_update" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

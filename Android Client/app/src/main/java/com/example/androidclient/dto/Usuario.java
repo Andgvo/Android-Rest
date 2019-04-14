@@ -103,7 +103,13 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.ipn.mx.blog.modelo.dto.Usuario[ idUsuario=" + idUsuario + " ]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("idUsuario: ").append(idUsuario)
+        .append("\tnombreUsuario: ").append(nombreUsuario)
+        .append("\tapellidoUsuario: ").append(apellidoUsuario)
+        .append("\temailUsuario: ").append(emailUsuario)
+        .append("\tpasswordUsuario: ").append(passwordUsuario);
+        return sb.toString();
     }
 
 }

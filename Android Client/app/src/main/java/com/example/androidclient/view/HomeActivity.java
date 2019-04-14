@@ -33,6 +33,8 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     private ArrayList<Post> listaPost;
+    private Usuario usuario;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -70,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(setListener( PostFormActivity.class ));
+        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         /*
             new View.OnClickListener() {
             @Override
@@ -98,6 +101,9 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent itn = new Intent(HomeActivity.this, UsuarioFormActivity.class);
+            itn.putExtra("usuario", usuario);
+            startActivity(itn);
             return true;
         }
 
@@ -149,7 +155,6 @@ public class HomeActivity extends AppCompatActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.fragment_post_titulo);
             RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
             recyclerPost.setLayoutManager( new LinearLayoutManager(this.getContext()) );
-
             llenarPost();
             AdapterPost adapterPost = new AdapterPost(listaPost);
             recyclerPost.setAdapter(adapterPost);
