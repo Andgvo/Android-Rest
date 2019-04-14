@@ -13,9 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.PostActivity"></activity>
-        <activity android:name=".view.UsuarioFormActivity" android:noHistory="true"/>
-        <activity android:name=".view.PostFormActivity" android:noHistory="true" />
+        <activity android:name=".view.ComentarioFormActivity"></activity>
+        <activity android:name=".view.ComentarioActivity" />
+        <activity android:name=".view.PostActivity" />
+        <activity
+            android:name=".view.UsuarioFormActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".view.PostFormActivity"
+            android:noHistory="true" />
         <activity
             android:name=".view.HomeActivity"
             android:label="@string/title_activity_home"

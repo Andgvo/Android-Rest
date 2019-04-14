@@ -22,6 +22,8 @@
     <string name="label_titulo">Titulo</string>
     <string name="label_resumen">Resumen</string>
     <string name="label_contenido">Contenido</string>
+    <!-- lables comentario form  -->
+    <string name="label_comentario_title_form">Información Comentario</string>
     <!-- generic labels forms -->
     <string name="label_insert">Agregar</string>
     <string name="label_update">Actualizar</string>

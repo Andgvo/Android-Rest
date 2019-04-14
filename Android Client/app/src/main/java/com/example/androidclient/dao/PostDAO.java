@@ -10,7 +10,6 @@ import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AyudanteBaseDeDatos;
 import com.example.androidclient.utilerias.DbTables;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

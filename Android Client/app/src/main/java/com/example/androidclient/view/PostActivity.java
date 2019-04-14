@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,27 +17,36 @@ import android.widget.Toast;
 
 import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
+import com.example.androidclient.dao.ComentarioDAO;
 import com.example.androidclient.dao.PostDAO;
+import com.example.androidclient.dto.Comentario;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
+import com.example.androidclient.utilerias.AdapterComentario;
+import com.example.androidclient.utilerias.AdapterPost;
+
+import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
     private static final String[] ITEMS_CATEGORIA = new String[]{"Java", "Android"};
     private final PostDAO dao = new PostDAO(this);
+    private final ComentarioDAO daoComentario = new ComentarioDAO(this);
     private long idPostInsert;
     private Post post;
     private Usuario usuario;
+    private List<Comentario> listaComentarios;
     private Usuario usuarioAutor;
 
     private LinearLayout llManageSinglePost;
     private LinearLayout llInsertSinglePost;
-    
+
     private TextView tvTitulo;
     private TextView tvCategoria;
     private TextView tvFecha;
     private TextView tvResumen;
     private TextView tvContenido;
-    
+    private RecyclerView recyclerPost;
+
     private FloatingActionButton fabInsertComentario;
     private FloatingActionButton fabUpdatePost;
     private FloatingActionButton fabDeltePost;
@@ -51,6 +62,24 @@ public class PostActivity extends AppCompatActivity {
         tvResumen = (TextView) findViewById(R.id.xtvPostResumen);
         tvContenido = (TextView) findViewById(R.id.xtvPostContenido);
 
+        recyclerPost = (RecyclerView) findViewById( R.id.xrecyclerIdPost );
+        recyclerPost.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
+        listaComentarios = daoComentario.readAll();
+        AdapterComentario adapterPost = new AdapterComentario(listaComentarios);
+        adapterPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent itn = new Intent(v.getContext(), PostActivity.class);
+                //Post postAux = listaPost.get(recyclerPost.getChildAdapterPosition(v));
+                //itn.putExtra("post",postAux);
+                //itn.putExtra("usuario",usuarioInternFragment);
+                //itn.putExtra("usuario",usuario);
+                //Toast.makeText(rootView.getContext(),"Post = "+postAux, Toast.LENGTH_SHORT).show();
+                //startActivity(itn);
+            }
+        });
+        recyclerPost.setAdapter(adapterPost);
+        Toast.makeText(getApplicationContext(),"lista_= " +listaComentarios, Toast.LENGTH_SHORT).show();
         fabInsertComentario = (FloatingActionButton) findViewById(R.id.xfabInsertComentario);
         fabUpdatePost = (FloatingActionButton) findViewById(R.id.xfabUpdatePost);
         fabDeltePost = (FloatingActionButton) findViewById(R.id.xfabDeltePost);
@@ -66,12 +95,12 @@ public class PostActivity extends AppCompatActivity {
             //llInsertSinglePost.setVisibility(View.GONE);
             //llManageSinglePost.setVisibility(View.VISIBLE);
         }
-        fabInsertComentario.setOnClickListener( setListener(null) );
+        //Preparing Recycler view
+
+
+        fabInsertComentario.setOnClickListener( setListener(ComentarioFormActivity.class) );
         fabUpdatePost.setOnClickListener( setListener(PostFormActivity.class) );
         fabDeltePost.setOnClickListener( deleteComentario() );
-        //sCategoria.setAdapter( new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ITEMS_CATEGORIA) );
-        //btnUpdate.setOnClickListener( update() );
-        //btnDelete.setOnClickListener( delete() );
     }
 
     private View.OnClickListener deleteComentario() {
@@ -93,7 +122,7 @@ public class PostActivity extends AppCompatActivity {
             }
         };
     }
-    
+
     private void setTextContent(Post post){
         tvTitulo.setText(post.getTituloPost());
         tvCategoria.setText(post.getCategoriaPost());
