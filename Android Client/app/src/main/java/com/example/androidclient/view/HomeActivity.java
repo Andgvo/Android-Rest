@@ -123,22 +123,24 @@ public class HomeActivity extends AppCompatActivity {
     @SuppressLint("ValidFragment")
     public static class PlaceholderFragment extends Fragment {
         public List<Post> listaPost = new ArrayList<>();
+        private Usuario usuarioInternFragment;
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment(List<Post> listaPost) {
+        public PlaceholderFragment(List<Post> listaPost, Usuario usuarioInternFragment) {
             this.listaPost = listaPost;
+            this.usuarioInternFragment = usuarioInternFragment;
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber,List<Post> listaPost) {
-            PlaceholderFragment fragment = new PlaceholderFragment( listaPost );
+        public static PlaceholderFragment newInstance(int sectionNumber,List<Post> listaPost, Usuario user) {
+            PlaceholderFragment fragment = new PlaceholderFragment( listaPost , user);
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -158,6 +160,9 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent itn = new Intent(v.getContext(), PostFormActivity.class);
                     Post postAux = listaPost.get(recyclerPost.getChildAdapterPosition(v));
+                    itn.putExtra("post",postAux);
+                    itn.putExtra("usuario",usuarioInternFragment);
+                    //itn.putExtra("usuario",usuario);
                     Toast.makeText(rootView.getContext(),"Post = "+postAux, Toast.LENGTH_SHORT).show();
                     startActivity(itn);
                 }
@@ -183,15 +188,15 @@ public class HomeActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1, listaPost);
+                    return PlaceholderFragment.newInstance(position + 1, listaPost, usuario);
                 case 1:
                     return PlaceholderFragment.newInstance(position + 1,
-                            filterCategoria(listaPost, "Java") );
+                            filterCategoria(listaPost, "Java"), usuario );
                 case 2:
                     return PlaceholderFragment.newInstance(position + 1,
-                            filterCategoria(listaPost, "Android") );
+                            filterCategoria(listaPost, "Android"), usuario );
                 default:
-                    return PlaceholderFragment.newInstance(position + 1, listaPost);
+                    return PlaceholderFragment.newInstance(position + 1, listaPost, usuario);
             }
         }
 

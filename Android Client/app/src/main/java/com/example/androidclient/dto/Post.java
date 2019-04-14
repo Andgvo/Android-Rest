@@ -157,7 +157,8 @@ public class Post implements Serializable {
                 .append("\ttituloPost = ").append(tituloPost)
                 .append("\t categoriaPost = ").append(categoriaPost)
                 .append("\t resumenPost =").append(resumenPost)
-                .append("\t contenido = ").append(contenidoPost);
+                .append("\t contenido = ").append(contenidoPost)
+                .append("\t idUsuario = ").append(idUsuario);
         return sb.toString();
     }
 
