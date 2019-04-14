@@ -35,6 +35,9 @@ public class HomeActivity extends AppCompatActivity {
     private Usuario usuario;
     private PostDAO dao;
     private List<Post> listaPost;
+    private PlaceholderFragment pageHome;
+    private PlaceholderFragment pageJava;
+    private PlaceholderFragment pageAndroid;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -58,6 +61,12 @@ public class HomeActivity extends AppCompatActivity {
         //GetPost Values
         dao = new PostDAO(this);
         listaPost = dao.readAll();
+        pageHome = new PlaceholderFragment(  listaPost, usuario);
+        pageJava = new PlaceholderFragment(
+                filterCategoria(listaPost, "Java"), usuario );
+        pageAndroid = new PlaceholderFragment(
+                filterCategoria(listaPost, "Android"), usuario );
+
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,15 +92,11 @@ public class HomeActivity extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
         listaPost = dao.readAll();
-        System.out.println("=============================");
-        System.out.println("Actualizando ");
-        System.out.println("=============================");
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        pageHome.updateAdapter(  listaPost);
+        pageJava.updateAdapter(
+                filterCategoria(listaPost, "Java"));
+        pageAndroid.updateAdapter(
+                filterCategoria(listaPost, "Android"));
     }
 
     @Override
@@ -124,13 +129,25 @@ public class HomeActivity extends AppCompatActivity {
         };
     }
 
+    private List<Post> filterCategoria( List<Post> lista, String categoria ){
+        List<Post> nuevaLista = new ArrayList<>();
+        for(Post post: lista){
+            if(post.getCategoriaPost().equals(categoria))
+                nuevaLista.add(post);
+        }
+        return nuevaLista;
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
     @SuppressLint("ValidFragment")
     public static class PlaceholderFragment extends Fragment {
+
+        public RecyclerView recyclerPost;
         public List<Post> listaPost = new ArrayList<>();
         private Usuario usuarioInternFragment;
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -142,25 +159,13 @@ public class HomeActivity extends AppCompatActivity {
             this.usuarioInternFragment = usuarioInternFragment;
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber,List<Post> listaPost, Usuario user) {
-            PlaceholderFragment fragment = new PlaceholderFragment( listaPost , user);
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
         @Override
         public View onCreateView( LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState ) {
-            final View rootView = inflater.inflate( R.layout.fragment_home, container, false );
-            final RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
+            View rootView = inflater.inflate( R.layout.fragment_home, container, false );
+            recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
             recyclerPost.setLayoutManager( new LinearLayoutManager(this.getContext()) );
-            final Context c = this.getContext();
+            Context c = this.getContext();
             AdapterPost adapterPost = new AdapterPost(listaPost);
             adapterPost.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,6 +180,23 @@ public class HomeActivity extends AppCompatActivity {
             });
             recyclerPost.setAdapter(adapterPost);
             return rootView;
+        }
+
+        public void updateAdapter(List<Post> listaPostAux){
+            AdapterPost adapterPost = new AdapterPost(listaPostAux);
+            this.listaPost = listaPostAux;
+            adapterPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent itn = new Intent(v.getContext(), PostActivity.class);
+                    Post postAux = listaPost.get(recyclerPost.getChildAdapterPosition(v));
+                    itn.putExtra("post",postAux);
+                    itn.putExtra("usuario",usuarioInternFragment);
+                    //itn.putExtra("usuario",usuario);
+                    startActivity(itn);
+                }
+            });
+            recyclerPost.setAdapter(adapterPost);
         }
     }
 
@@ -192,18 +214,15 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            listaPost = dao.readAll();
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1, listaPost, usuario);
+                    return pageHome;
                 case 1:
-                    return PlaceholderFragment.newInstance(position + 1,
-                            filterCategoria(listaPost, "Java"), usuario );
+                    return pageJava;
                 case 2:
-                    return PlaceholderFragment.newInstance(position + 1,
-                            filterCategoria(listaPost, "Android"), usuario );
+                    return pageAndroid;
                 default:
-                    return PlaceholderFragment.newInstance(position + 1, listaPost, usuario);
+                    return pageHome;
             }
         }
 
@@ -218,7 +237,6 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 
