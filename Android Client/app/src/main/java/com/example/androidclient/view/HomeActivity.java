@@ -28,6 +28,7 @@ import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AdapterPost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         //GetPost Values
         dao = new PostDAO(this);
+        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         listaPost = dao.readAll();
         pageHome = new PlaceholderFragment(  listaPost, usuario);
         pageJava = new PlaceholderFragment(
@@ -75,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -92,11 +93,16 @@ public class HomeActivity extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
         listaPost = dao.readAll();
-        pageHome.updateAdapter(  listaPost);
+        List<Post> post1 = new ArrayList<>();
+        List<Post> post2 = new ArrayList<>();
+        post1.addAll(listaPost);
+        post2.addAll(listaPost);
+
+        pageHome.updateAdapter( listaPost);
         pageJava.updateAdapter(
-                filterCategoria(listaPost, "Java"));
+                filterCategoria( post1 , "Java"));
         pageAndroid.updateAdapter(
-                filterCategoria(listaPost, "Android"));
+                filterCategoria( post2, "Android"));
     }
 
     @Override
@@ -133,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
         List<Post> nuevaLista = new ArrayList<>();
         for(Post post: lista){
             if(post.getCategoriaPost().equals(categoria))
-                nuevaLista.add(post);
+                nuevaLista.add( post );
         }
         return nuevaLista;
     }

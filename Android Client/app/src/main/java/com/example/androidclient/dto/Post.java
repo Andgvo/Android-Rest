@@ -24,6 +24,17 @@ public class Post implements Serializable {
         idUsuario = new Usuario();
     }
 
+    public  Post(Post post ){
+        this.idPost = post.getIdPost();
+        this.tituloPost = post.getTituloPost();
+        this.categoriaPost = post.getCategoriaPost();
+        this.fechaPost = (Date) post.getFechaPost();
+        this.resumenPost = post.getResumenPost();
+        this.contenidoPost = post.getContenidoPost();
+        this.urlImagenPost = post.getUrlImagenPost();
+        this.idUsuario = (Usuario) post.getIdUsuario();
+    }
+
     public Post(Integer idPost) {
         this.idPost = idPost;
     }

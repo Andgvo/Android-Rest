@@ -110,11 +110,36 @@ public class PostActivity extends AppCompatActivity {
         };
     }
 
+    private void updateAdapter(){
+        listaComentarios = daoComentario.readAll(post);
+        AdapterComentario adapterPost = new AdapterComentario(listaComentarios);
+        adapterPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comentario comentarioAux = listaComentarios.get(recyclerPost.getChildAdapterPosition(v));
+                if(usuario.getIdUsuario() == comentarioAux.getIdUsuario().getIdUsuario()) {
+                    Intent itn = new Intent(v.getContext(), ComentarioFormActivity.class);
+                    itn.putExtra("post", post);
+                    itn.putExtra("usuario", usuario);
+                    itn.putExtra("comentario", comentarioAux);
+                    startActivity(itn);
+                }
+            }
+        });
+        recyclerPost.setAdapter(adapterPost);
+    }
+
     private void setTextContent(Post post){
         tvTitulo.setText(post.getTituloPost());
         tvCategoria.setText(post.getCategoriaPost());
         tvFecha.setText(FORMATO.format(post.getFechaPost()) + " por "+post.getIdUsuario().getNombreUsuario());
         tvResumen.setText(post.getResumenPost());
         tvContenido.setText(post.getContenidoPost());
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        updateAdapter();
     }
 }

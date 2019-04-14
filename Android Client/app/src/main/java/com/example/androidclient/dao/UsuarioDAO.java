@@ -43,6 +43,7 @@ public class UsuarioDAO implements DAO<Usuario> {
             return idUsuarioAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -62,6 +63,7 @@ public class UsuarioDAO implements DAO<Usuario> {
             return rowsAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -76,6 +78,7 @@ public class UsuarioDAO implements DAO<Usuario> {
             return  rowsAffected;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -132,6 +135,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 
         // Fin del ciclo. Cerramos cursor y regresamos la lista de Usuarios :)
         cursor.close();
+        db.close();
         return Usuarios;
     }
 
@@ -156,9 +160,12 @@ public class UsuarioDAO implements DAO<Usuario> {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4));
+            cursor.close();
+            db.close();
             return usuario;
         }catch (Exception e) {
             e.printStackTrace();
+            db.close();
             return null;
         }
     }

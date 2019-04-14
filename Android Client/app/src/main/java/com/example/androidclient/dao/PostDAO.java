@@ -58,6 +58,7 @@ public class PostDAO implements DAO<Post>{
             return idPostAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -79,6 +80,7 @@ public class PostDAO implements DAO<Post>{
             return rowsAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -93,6 +95,7 @@ public class PostDAO implements DAO<Post>{
             return  rowsAffected;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -113,9 +116,12 @@ public class PostDAO implements DAO<Post>{
             );
             cursor.moveToFirst();
             post = new Post();
+            cursor.close();
+            db.close();
             return post;
         }catch (Exception e) {
             e.printStackTrace();
+            db.close();
             return null;
         }
     }
@@ -146,9 +152,11 @@ public class PostDAO implements DAO<Post>{
             }
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
             cursor.close();
+            db.close();
             return posts;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return null;
         }
     }

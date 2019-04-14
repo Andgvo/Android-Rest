@@ -53,6 +53,7 @@ public class ComentarioDAO implements DAO<Comentario>{
             db.close();
             return idComentarioAffected;
         }catch ( Exception ex ) {
+            db.close();
             ex.printStackTrace();
             return -1;
         }
@@ -73,6 +74,7 @@ public class ComentarioDAO implements DAO<Comentario>{
             return rowsAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -87,6 +89,7 @@ public class ComentarioDAO implements DAO<Comentario>{
             return  rowsAffected;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return -1;
         }
     }
@@ -107,6 +110,7 @@ public class ComentarioDAO implements DAO<Comentario>{
             );
             cursor.moveToFirst();
             comentario = new Comentario();
+            cursor.close();
             return comentario;
         }catch (Exception e) {
             e.printStackTrace();
@@ -144,9 +148,11 @@ public class ComentarioDAO implements DAO<Comentario>{
             }
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Comentarios :)
             cursor.close();
+            db.close();
             return comentarios;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return null;
         }
     }
@@ -173,9 +179,11 @@ public class ComentarioDAO implements DAO<Comentario>{
             }
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Comentarios :)
             cursor.close();
+            db.close();
             return comentarios;
         }catch (Exception ex){
             ex.printStackTrace();
+            db.close();
             return null;
         }
     }

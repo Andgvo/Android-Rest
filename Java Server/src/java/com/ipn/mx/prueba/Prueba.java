@@ -23,10 +23,13 @@ public class Prueba {
         dato.add( new Dato("caso3", "Java"));
         dato.add( new Dato("caso4", "Android"));
         dato.add( new Dato("caso5", "Other"));
-        System.out.println(
-            dato.stream()
-                    .filter( d -> d.getCategoria().equals("Java"))
-                    .collect(Collectors.toList()));
+        
+        List<Dato> dato2 = new ArrayList<>();
+        dato2.addAll(dato);
+        dato.set(0, new Dato("CAMBIADO", "XX"));
+        System.out.println("==============================");
+        System.out.println(dato);
+        System.out.println(dato2);
     }
     
     public class Dato{
@@ -68,5 +71,6 @@ public class Prueba {
         System.out.println( new Timestamp(date.getTime()));
         System.out.println("===============>");
         Prueba p = new Prueba();
+        
     }    
 }
