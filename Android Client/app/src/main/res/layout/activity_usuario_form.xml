@@ -77,7 +77,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
-                android:id="@+id/xllPostInsert"
+                android:id="@+id/xllUsuarioInsert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -92,7 +92,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/xllPostUpdate"
+                android:id="@+id/xllUsuarioUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

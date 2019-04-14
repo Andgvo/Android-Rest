@@ -13,9 +13,10 @@ import com.example.androidclient.dto.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost> {
+public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost> implements View.OnClickListener{
 
     List<Post> listaPost;
+    View.OnClickListener listener;
 
     public AdapterPost(List<Post> listaPost) {
         this.listaPost = listaPost;
@@ -24,6 +25,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public ViewHolderPost onCreateViewHolder(@NonNull ViewGroup parent, int viewType ) {
         View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, null, false);
+        view.setOnClickListener(this);
         return new ViewHolderPost(view);
     }
 
@@ -37,6 +39,17 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public int getItemCount() {
         return listaPost.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null){
+            listener.onClick(v);
+        }
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
     }
 
     public class ViewHolderPost extends RecyclerView.ViewHolder {

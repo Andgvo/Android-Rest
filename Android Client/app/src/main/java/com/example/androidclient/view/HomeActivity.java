@@ -1,5 +1,7 @@
 package com.example.androidclient.view;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
@@ -61,9 +64,6 @@ public class HomeActivity extends AppCompatActivity {
         //GetPost Values
         dao = new PostDAO(this);
         listaPost = dao.readAll();
-        System.out.println("--------------------------------");
-        System.out.println(dao);
-        System.out.println("--------------------------------");
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,26 +120,27 @@ public class HomeActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
+    @SuppressLint("ValidFragment")
     public static class PlaceholderFragment extends Fragment {
-        public static List<Post> listaPost = new ArrayList<>();
+        public List<Post> listaPost = new ArrayList<>();
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {}
+        public PlaceholderFragment(List<Post> listaPost) {
+            this.listaPost = listaPost;
+        }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, List<Post> listaPost) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static PlaceholderFragment newInstance(int sectionNumber,List<Post> listaPost) {
+            PlaceholderFragment fragment = new PlaceholderFragment( listaPost );
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            if(listaPost != null)
-                PlaceholderFragment.listaPost = listaPost;
             fragment.setArguments(args);
             return fragment;
         }
@@ -147,13 +148,21 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public View onCreateView( LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState ) {
-            View rootView = inflater.inflate( R.layout.fragment_home, container, false );
-            TextView textView = (TextView) rootView.findViewById(R.id.fragment_post_titulo);
-            RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
+            final View rootView = inflater.inflate( R.layout.fragment_home, container, false );
+            final RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
             recyclerPost.setLayoutManager( new LinearLayoutManager(this.getContext()) );
+            final Context c = this.getContext();
             AdapterPost adapterPost = new AdapterPost(listaPost);
+            adapterPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent itn = new Intent(v.getContext(), PostFormActivity.class);
+                    Post postAux = listaPost.get(recyclerPost.getChildAdapterPosition(v));
+                    Toast.makeText(rootView.getContext(),"Post = "+postAux, Toast.LENGTH_SHORT).show();
+                    startActivity(itn);
+                }
+            });
             recyclerPost.setAdapter(adapterPost);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
@@ -172,9 +181,27 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            System.out.println("===============================> ");
-            System.out.println(listaPost);
-            return PlaceholderFragment.newInstance(position + 1, listaPost);
+            switch (position) {
+                case 0:
+                    return PlaceholderFragment.newInstance(position + 1, listaPost);
+                case 1:
+                    return PlaceholderFragment.newInstance(position + 1,
+                            filterCategoria(listaPost, "Java") );
+                case 2:
+                    return PlaceholderFragment.newInstance(position + 1,
+                            filterCategoria(listaPost, "Android") );
+                default:
+                    return PlaceholderFragment.newInstance(position + 1, listaPost);
+            }
+        }
+
+        private List<Post> filterCategoria( List<Post> lista, String categoria ){
+            List<Post> nuevaLista = new ArrayList<>();
+            for(Post post: lista){
+                if(post.getCategoriaPost().equals(categoria))
+                    nuevaLista.add(post);
+            }
+            return nuevaLista;
         }
 
         @Override
