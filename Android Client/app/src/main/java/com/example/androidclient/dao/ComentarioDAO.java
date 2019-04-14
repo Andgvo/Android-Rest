@@ -19,6 +19,9 @@ import java.util.List;
 public class ComentarioDAO implements DAO<Comentario>{
 
     private static final String CONDICION_BY_ID = DbTables.COMENTARIO_ID + " = ? ";
+    private static final String QUERY_BY_ID_POST =
+            "SELECT c.idComentario, c.fechaComentario, c.contenidoComentario, u.idUsuario, u.nombreUsuario, c.idPost FROM Comentario c INNER JOIN Usuario u ON c.idUsuario = u.idUsuario WHERE c.idPost = ?;";
+
     private static final String[] CAMPOS_RETURN_ALL = {
             DbTables.COMENTARIO_ID,
             DbTables.COMENTARIO_FECHA,
@@ -136,6 +139,35 @@ public class ComentarioDAO implements DAO<Comentario>{
                         cursor.getString(2),
                         new Usuario(cursor.getInt(3)),
                         new Post(cursor.getInt(4))
+                );
+                comentarios.add(ComentarioObtenidaDeBD);
+            }
+            // Fin del ciclo. Cerramos cursor y regresamos la lista de Comentarios :)
+            cursor.close();
+            return comentarios;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Comentario> readAll(Post post)  {
+        ArrayList<Comentario> comentarios = new ArrayList<>();
+        try {
+            db = ayudanteBaseDeDatos.getReadableDatabase();
+            String[] argumentos = {String.valueOf(post.getIdPost())};
+            Cursor cursor = db.rawQuery(QUERY_BY_ID_POST, argumentos);
+            //Hubo un error
+            if (cursor == null) return null;
+            // Si no hay datos, igualmente regresamos la lista vacía
+            if (!cursor.moveToFirst()) return comentarios;
+            while (cursor.moveToNext()) {
+                Comentario ComentarioObtenidaDeBD = new Comentario(
+                        cursor.getInt(0),
+                        new Date(cursor.getString(1).replace("-","/")),
+                        cursor.getString(2),
+                        new Usuario(cursor.getInt(3), cursor.getString(4)),
+                        new Post(cursor.getInt(5))
                 );
                 comentarios.add(ComentarioObtenidaDeBD);
             }

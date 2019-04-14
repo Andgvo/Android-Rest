@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
 import com.example.androidclient.dao.PostDAO;
-import com.example.androidclient.dao.UsuarioDAO;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AdapterPost;
@@ -112,6 +106,7 @@ public class HomeActivity extends AppCompatActivity {
                 Intent itn = new Intent(HomeActivity.this, clase);
                 itn.putExtra("usuario", usuario);
                 startActivity(itn);
+                listaPost = dao.readAll();
             }
         };
     }
@@ -162,7 +157,6 @@ public class HomeActivity extends AppCompatActivity {
                     itn.putExtra("post",postAux);
                     itn.putExtra("usuario",usuarioInternFragment);
                     //itn.putExtra("usuario",usuario);
-                    Toast.makeText(rootView.getContext(),"Post = "+postAux, Toast.LENGTH_SHORT).show();
                     startActivity(itn);
                 }
             });
