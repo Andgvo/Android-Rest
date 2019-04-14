@@ -11,6 +11,7 @@ import com.example.androidclient.R;
 import com.example.androidclient.dto.Post;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost> implements View.OnClickListener{
@@ -32,7 +33,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public void onBindViewHolder(@NonNull ViewHolderPost viewHolderPost, int i) {
         viewHolderPost.tvTitulo.setText( listaPost.get(i).getTituloPost() );
-        viewHolderPost.tvFecha.setText( FORMATO.format(listaPost.get(i).getFechaPost()) );
+        viewHolderPost.tvFecha.setText( formatoPublicacion(listaPost.get(i)) );
         viewHolderPost.tvResumen.setText( listaPost.get(i).getResumenPost() );
         viewHolderPost.tvContenido.setText( listaPost.get(i).getContenidoPost() );
     }
@@ -51,6 +52,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
     public void setOnClickListener(View.OnClickListener listener){
         this.listener = listener;
+    }
+
+    public String formatoPublicacion(Post post){
+        return FORMATO.format(post.getFechaPost())+ " por "+post.getIdUsuario().getNombreUsuario();
     }
 
     public class ViewHolderPost extends RecyclerView.ViewHolder {

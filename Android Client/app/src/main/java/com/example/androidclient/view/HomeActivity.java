@@ -79,6 +79,20 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(setListener( PostFormActivity.class ));
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        listaPost = dao.readAll();
+        System.out.println("=============================");
+        System.out.println("Actualizando ");
+        System.out.println("=============================");
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -106,7 +120,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent itn = new Intent(HomeActivity.this, clase);
                 itn.putExtra("usuario", usuario);
                 startActivity(itn);
-                listaPost = dao.readAll();
             }
         };
     }
@@ -179,6 +192,7 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            listaPost = dao.readAll();
             switch (position) {
                 case 0:
                     return PlaceholderFragment.newInstance(position + 1, listaPost, usuario);

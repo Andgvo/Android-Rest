@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 
 import com.example.androidclient.R;
 import com.example.androidclient.dao.ComentarioDAO;
@@ -19,10 +18,11 @@ import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AdapterComentario;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
-    private static final String[] ITEMS_CATEGORIA = new String[]{"Java", "Android"};
+    private static final SimpleDateFormat FORMATO = new SimpleDateFormat("yyyy-MM-dd");
     private final PostDAO dao = new PostDAO(this);
     private final ComentarioDAO daoComentario = new ComentarioDAO(this);
     private Post post;
@@ -113,7 +113,7 @@ public class PostActivity extends AppCompatActivity {
     private void setTextContent(Post post){
         tvTitulo.setText(post.getTituloPost());
         tvCategoria.setText(post.getCategoriaPost());
-        tvFecha.setText(post.getFechaPost().toString());
+        tvFecha.setText(FORMATO.format(post.getFechaPost()) + " por "+post.getIdUsuario().getNombreUsuario());
         tvResumen.setText(post.getResumenPost());
         tvContenido.setText(post.getContenidoPost());
     }

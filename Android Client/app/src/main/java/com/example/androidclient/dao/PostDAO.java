@@ -18,6 +18,8 @@ import java.util.List;
 public class PostDAO implements DAO<Post>{
 
     private static final String CONDICION_BY_ID = DbTables.POST_ID + " = ? ";
+    private static final String QUERY_INNER_JOIN =
+            "SELECT p.idPost, p.tituloPost, p.categoriaPost, p.fechaPost, p.resumenPost, p.contenidoPost, p.urlImagenPost, u.idUsuario, u.nombreUsuario FROM Post p, Usuario u WHERE  p.idUsuario = u.idUsuario;";
     private static final String[] CAMPOS_RETURN_ALL = {
             DbTables.POST_ID,
             DbTables.POST_TITULO,
@@ -121,17 +123,10 @@ public class PostDAO implements DAO<Post>{
     @Override
     public List<Post> readAll()  {
         ArrayList<Post> posts = new ArrayList<>();
+        String[] parametros = {};
         try {
             db = ayudanteBaseDeDatos.getReadableDatabase();
-            Cursor cursor = db.query(
-                    DbTables.TABLE_POST,//from Posts
-                    CAMPOS_RETURN_ALL,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
+            Cursor cursor = db.rawQuery(QUERY_INNER_JOIN, parametros);
             //Hubo un error
             if (cursor == null) return null;
             // Si no hay datos, igualmente regresamos la lista vacía
@@ -145,7 +140,7 @@ public class PostDAO implements DAO<Post>{
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
-                        new Usuario(cursor.getInt(7))
+                        new Usuario(cursor.getInt(7), cursor.getString(8))
                 );
                 posts.add(PostObtenidaDeBD);
             }
