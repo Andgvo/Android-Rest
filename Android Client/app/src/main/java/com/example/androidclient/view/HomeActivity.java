@@ -83,7 +83,6 @@ public class HomeActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(setListener( PostFormActivity.class ));
-
     }
 
 
@@ -158,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
             adapterPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent itn = new Intent(v.getContext(), PostFormActivity.class);
+                    Intent itn = new Intent(v.getContext(), PostActivity.class);
                     Post postAux = listaPost.get(recyclerPost.getChildAdapterPosition(v));
                     itn.putExtra("post",postAux);
                     itn.putExtra("usuario",usuarioInternFragment);
