@@ -11,12 +11,13 @@ import com.example.androidclient.R;
 import com.example.androidclient.dto.Post;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost> {
 
-    ArrayList<Post> listaPost;
+    List<Post> listaPost;
 
-    public AdapterPost(ArrayList<Post> listaPost) {
+    public AdapterPost(List<Post> listaPost) {
         this.listaPost = listaPost;
     }
 

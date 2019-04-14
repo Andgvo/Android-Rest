@@ -61,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
         //GetPost Values
         dao = new PostDAO(this);
         listaPost = dao.readAll();
+        System.out.println("--------------------------------");
+        System.out.println(dao);
+        System.out.println("--------------------------------");
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,48 +121,40 @@ public class HomeActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
-        ArrayList<Post> listaPost;
+        public static List<Post> listaPost = new ArrayList<>();
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-            listaPost = new ArrayList<>();
-        }
+        public PlaceholderFragment() {}
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, List<Post> listaPost) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            if(listaPost != null)
+                PlaceholderFragment.listaPost = listaPost;
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        public View onCreateView( LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState ) {
+            View rootView = inflater.inflate( R.layout.fragment_home, container, false );
             TextView textView = (TextView) rootView.findViewById(R.id.fragment_post_titulo);
             RecyclerView recyclerPost = (RecyclerView) rootView.findViewById( R.id.xrecyclerId );
             recyclerPost.setLayoutManager( new LinearLayoutManager(this.getContext()) );
-            llenarPost();
             AdapterPost adapterPost = new AdapterPost(listaPost);
             recyclerPost.setAdapter(adapterPost);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
-        }
-
-        private void llenarPost(){
-            for(int i = 0; i < 10 ; i++ ) {
-                listaPost.add(new Post("Post Prueba"+i, "categoria X", "Resumen x", "Contenido contenido de taget ejemplo xD. Prueba no 23", "Url x", new Usuario()));
-            }
         }
     }
 
@@ -177,13 +172,32 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            System.out.println("===============================> ");
+            System.out.println(listaPost);
+            return PlaceholderFragment.newInstance(position + 1, listaPost);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
             return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String section = null;
+            switch (position) {
+                case 0:
+                    section = "Home";
+                    break;
+                case 1:
+                    section = "Java";
+                    break;
+                case 2:
+                    section = "Android";
+                    break;
+            }
+            return section;
         }
     }
 }

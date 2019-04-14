@@ -121,7 +121,7 @@ public class PostDAO implements DAO<Post>{
 
     @Override
     public List<Post> readAll()  {
-        ArrayList<Post> Posts = new ArrayList<>();
+        ArrayList<Post> posts = new ArrayList<>();
         try {
             db = ayudanteBaseDeDatos.getReadableDatabase();
             Cursor cursor = db.query(
@@ -136,23 +136,23 @@ public class PostDAO implements DAO<Post>{
             //Hubo un error
             if (cursor == null) return null;
             // Si no hay datos, igualmente regresamos la lista vacía
-            if (!cursor.moveToFirst()) return Posts;
+            if (!cursor.moveToFirst()) return posts;
             while (cursor.moveToNext()) {
                 Post PostObtenidaDeBD = new Post(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        new Date(cursor.getString(3)),
+                        new Date(cursor.getString(3).replace("-","/")),
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
                         new Usuario(cursor.getInt(7))
                 );
-                Posts.add(PostObtenidaDeBD);
+                posts.add(PostObtenidaDeBD);
             }
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
             cursor.close();
-            return Posts;
+            return posts;
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
