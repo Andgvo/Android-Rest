@@ -94,6 +94,7 @@ public class PostFormActivity extends AppCompatActivity {
                         usuario
                 );
                 dao.update(postAux);
+                finish();
             }
         };
     }

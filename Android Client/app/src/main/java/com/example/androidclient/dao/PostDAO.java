@@ -97,7 +97,7 @@ public class PostDAO implements DAO<Post>{
     }
 
     @Override
-    public Post read(Post post) throws SQLException {
+    public Post read(Post post) {
         String[] parametrosCondicion = {String.valueOf(post.getIdPost()), String.valueOf(post.getIdUsuario().getIdUsuario())}; // {post.getNombrePost(), post.getPasswordPost()};
         String condicion = DbTables.POST_ID + " = ? AND " + DbTables.POST_ID_USUARIO + " = ?" ;
         try{

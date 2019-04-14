@@ -77,6 +77,7 @@ public class PostActivity extends AppCompatActivity {
     private View.OnClickListener deleteComentario() {
         return new View.OnClickListener() {
             public void onClick(View v) {
+                dao.delete(post);
                 finish();
             }
         };
