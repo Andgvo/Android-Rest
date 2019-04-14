@@ -24,16 +24,20 @@ import android.widget.TextView;
 
 import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
+import com.example.androidclient.dao.PostDAO;
+import com.example.androidclient.dao.UsuarioDAO;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AdapterPost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ArrayList<Post> listaPost;
     private Usuario usuario;
+    private PostDAO dao;
+    private List<Post> listaPost;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -54,7 +58,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        //GetPost Values
+        dao = new PostDAO(this);
+        listaPost = dao.readAll();
+        //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -62,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
+        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -72,15 +80,6 @@ public class HomeActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(setListener( PostFormActivity.class ));
-        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
-        /*
-            new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }*/
 
     }
 
@@ -94,11 +93,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent itn = new Intent(HomeActivity.this, UsuarioFormActivity.class);
@@ -106,7 +101,6 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(itn);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -114,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 Intent itn = new Intent(HomeActivity.this, clase);
-                //itn.putExtra("urlServidor",etUrl.getText().toString());
+                itn.putExtra("usuario", usuario);
                 startActivity(itn);
             }
         };

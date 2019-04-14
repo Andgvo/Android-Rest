@@ -1,108 +1,162 @@
 package com.example.androidclient.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.androidclient.dto.Post;
+import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AyudanteBaseDeDatos;
+import com.example.androidclient.utilerias.DbTables;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class PostDAO implements DAO<Post> {
+public class PostDAO implements DAO<Post>{
+
+    private static final String CONDICION_BY_ID = DbTables.POST_ID + " = ? ";
+    private static final String[] CAMPOS_RETURN_ALL = {
+            DbTables.POST_ID,
+            DbTables.POST_TITULO,
+            DbTables.POST_CATEGORIA,
+            DbTables.POST_FECHA,
+            DbTables.POST_RESUMEN,
+            DbTables.POST_CONTENIDO,
+            DbTables.POST_URL,
+            DbTables.POST_ID_USUARIO
+    };
+    private static final SimpleDateFormat FORMATO = new SimpleDateFormat("yyyy-MM-dd");
+    private int rowsAffected = 0;
     private AyudanteBaseDeDatos ayudanteBaseDeDatos;
-    private static final String NOMBRE_TABLA = "Post";
+    private SQLiteDatabase db;
 
-    @Override
-    public void create(Post Post) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        ContentValues valoresParaInsertar = new ContentValues();
-        valoresParaInsertar.put("tituloPost", Post.getTituloPost());
-        valoresParaInsertar.put("categoriaPost", Post.getCategoriaPost());
-        valoresParaInsertar.put("fechaPost", Post.getFechaPost().toString());
-        valoresParaInsertar.put("resumenPost", Post.getResumenPost());
-        valoresParaInsertar.put("contenidoPost", Post.getContenidoPost());
-        valoresParaInsertar.put("urlImagenPost", Post.getUrlImagenPost());
-        baseDeDatos.insert(NOMBRE_TABLA, null, valoresParaInsertar);
+
+    public PostDAO(Context context){
+        ayudanteBaseDeDatos = new AyudanteBaseDeDatos(context);
     }
 
     @Override
-    public void update(Post Post) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        ContentValues valoresParaActualizar = new ContentValues();
-        valoresParaActualizar.put("tituloPost", Post.getTituloPost());
-        valoresParaActualizar.put("categoriaPost", Post.getCategoriaPost());
-        valoresParaActualizar.put("fechaPost", Post.getFechaPost().toString());
-        valoresParaActualizar.put("resumenPost", Post.getResumenPost());
-        valoresParaActualizar.put("contenidoPost", Post.getContenidoPost());
-        valoresParaActualizar.put("urlImagenPost", Post.getUrlImagenPost());
-        // where id...
-        String campoParaActualizar = "id = ?";
-        String[] argumentosParaActualizar = {String.valueOf(Post.getIdPost())};
-        baseDeDatos.update(NOMBRE_TABLA, valoresParaActualizar, campoParaActualizar, argumentosParaActualizar);
-    }
-
-    @Override
-    public void delete(Post Post) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
-        String[] argumentos = {String.valueOf(Post.getIdPost())};
-        baseDeDatos.delete(NOMBRE_TABLA, "id = ?", argumentos);
-    }
-
-    @Override
-    public Post read(Post Post) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public List<Post> readAll() throws SQLException {
-        ArrayList<Post> Posts = new ArrayList<>();
-        // readable porque no vamos a modificar, solamente leer
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getReadableDatabase();
-        // SELECT nombre, edad, id
-        String[] columnasAConsultar =
-                {"idPost", "tituloPost", "categoriaPost", "resumenPost", "contenidoPost","urlImagenPost"};
-        Cursor cursor = baseDeDatos.query(
-                NOMBRE_TABLA,//from Posts
-                columnasAConsultar,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        if (cursor == null) {
-            /*
-                Salimos aquí porque hubo un error, regresar
-                lista vacía
-             */
-            return Posts;
-
+    public long create(Post post) {
+        long idPostAffected;
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DbTables.POST_TITULO, post.getTituloPost());
+            values.put(DbTables.POST_CATEGORIA, post.getCategoriaPost());
+            values.put(DbTables.POST_FECHA, FORMATO.format(post.getFechaPost()) );
+            values.put(DbTables.POST_RESUMEN, post.getResumenPost());
+            values.put(DbTables.POST_CONTENIDO, post.getContenidoPost());
+            values.put(DbTables.POST_URL, post.getUrlImagenPost());
+            values.put(DbTables.POST_ID_USUARIO, post.getIdUsuario().getIdUsuario());
+            idPostAffected = db.insert(DbTables.TABLE_POST, null, values);
+            db.close();
+            return idPostAffected;
+        }catch ( Exception ex ) {
+            ex.printStackTrace();
+            return -1;
         }
-        // Si no hay datos, igualmente regresamos la lista vacía
-        if (!cursor.moveToFirst()) return Posts;
-
-        // En caso de que sí haya, iteramos y vamos agregando los
-        // datos a la lista de Posts
-        do {
-            // El 0 es el número de la columna, como seleccionamos
-            // nombre, edad,id entonces el nombre es 0, edad 1 e id es 2
-            int idPost = cursor.getInt(0);
-            String tituloPost = cursor.getString(1);
-            String categoriaPost = cursor.getString(2);
-            String resumenPost = cursor.getString(3);
-            String contenidoPost = cursor.getString(4);
-            String urlImagenPost = cursor.getString(5);
-            Post PostObtenidaDeBD = new Post(
-                    idPost, tituloPost, categoriaPost, resumenPost, contenidoPost, urlImagenPost);
-            Posts.add(PostObtenidaDeBD);
-        } while (cursor.moveToNext());
-
-        // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
-        cursor.close();
-        return Posts;
     }
+
+    @Override
+    public int update(Post post) {
+        String[] parametrosCondicion = {String.valueOf(post.getIdPost())};
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DbTables.POST_TITULO, post.getTituloPost());
+            values.put(DbTables.POST_CATEGORIA, post.getCategoriaPost());
+            values.put(DbTables.POST_FECHA, FORMATO.format(post.getFechaPost()) );
+            values.put(DbTables.POST_RESUMEN, post.getResumenPost());
+            values.put(DbTables.POST_CONTENIDO, post.getContenidoPost());
+            values.put(DbTables.POST_URL, post.getUrlImagenPost());
+            rowsAffected = db.update(DbTables.TABLE_POST,values,CONDICION_BY_ID,parametrosCondicion);
+            db.close();
+            return rowsAffected;
+        }catch ( Exception ex ) {
+            ex.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int delete(Post post) {
+        try {
+            db = ayudanteBaseDeDatos.getWritableDatabase();
+            String[] argumentos = {String.valueOf(post.getIdPost())};
+            rowsAffected = db.delete(DbTables.TABLE_POST, CONDICION_BY_ID, argumentos);
+            db.close();
+            return  rowsAffected;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public Post read(Post post) throws SQLException {
+        String[] parametrosCondicion = {String.valueOf(post.getIdPost()), String.valueOf(post.getIdUsuario().getIdUsuario())}; // {post.getNombrePost(), post.getPasswordPost()};
+        String condicion = DbTables.POST_ID + " = ? AND " + DbTables.POST_ID_USUARIO + " = ?" ;
+        try{
+            Cursor cursor = db.query(
+                    DbTables.TABLE_POST,
+                    CAMPOS_RETURN_ALL,
+                    condicion,
+                    parametrosCondicion,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            post = new Post();
+            return post;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Post> readAll()  {
+        ArrayList<Post> Posts = new ArrayList<>();
+        try {
+            db = ayudanteBaseDeDatos.getReadableDatabase();
+            Cursor cursor = db.query(
+                    DbTables.TABLE_POST,//from Posts
+                    CAMPOS_RETURN_ALL,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            //Hubo un error
+            if (cursor == null) return null;
+            // Si no hay datos, igualmente regresamos la lista vacía
+            if (!cursor.moveToFirst()) return Posts;
+            while (cursor.moveToNext()) {
+                Post PostObtenidaDeBD = new Post(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        new Date(cursor.getString(3)),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        new Usuario(cursor.getInt(7))
+                );
+                Posts.add(PostObtenidaDeBD);
+            }
+            // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
+            cursor.close();
+            return Posts;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

@@ -14,15 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDAO implements DAO<Usuario> {
+    
+    private static final String CONDICION_BY_ID = DbTables.USUARIO_ID + " = ? ";
+    private static final String[] CAMPOS_RETURN_ALL = {
+            DbTables.USUARIO_ID, DbTables.USUARIO_NOMBRE, DbTables.USUARIO_APELLIDO,
+            DbTables.USUARIO_EMAIL, DbTables.USUARIO_PASSWORD };
+    private int rowsAffected = 0;
     private AyudanteBaseDeDatos ayudanteBaseDeDatos;
+    private SQLiteDatabase db;
 
+    
     public UsuarioDAO(Context context){
         ayudanteBaseDeDatos = new AyudanteBaseDeDatos(context);
     }
 
     @Override
-    public void create(Usuario usuario) {
-        SQLiteDatabase db;
+    public long create(Usuario usuario) {
+        long idUsuarioAffected;
         try {
             db = ayudanteBaseDeDatos.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -30,18 +38,18 @@ public class UsuarioDAO implements DAO<Usuario> {
             values.put(DbTables.USUARIO_APELLIDO, usuario.getApellidoUsuario());
             values.put(DbTables.USUARIO_EMAIL, usuario.getEmailUsuario());
             values.put(DbTables.USUARIO_PASSWORD, usuario.getPasswordUsuario());
-            db.insert(DbTables.TABLE_USUARIO, null, values);
+            idUsuarioAffected = db.insert(DbTables.TABLE_USUARIO, null, values);
             db.close();
+            return idUsuarioAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
+            return -1;
         }
     }
 
     @Override
-    public void update(Usuario usuario) {
-        SQLiteDatabase db;
+    public int update(Usuario usuario) {
         String[] parametrosCondicion = {String.valueOf(usuario.getIdUsuario())};
-        String condicion = DbTables.USUARIO_ID + " = ? ";
         try {
             db = ayudanteBaseDeDatos.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -49,31 +57,32 @@ public class UsuarioDAO implements DAO<Usuario> {
             values.put(DbTables.USUARIO_APELLIDO, usuario.getApellidoUsuario());
             values.put(DbTables.USUARIO_EMAIL, usuario.getEmailUsuario());
             values.put(DbTables.USUARIO_PASSWORD, usuario.getPasswordUsuario());
-            int affected = db.update(DbTables.TABLE_USUARIO,values,condicion,parametrosCondicion);
+            rowsAffected = db.update(DbTables.TABLE_USUARIO,values,CONDICION_BY_ID,parametrosCondicion);
             db.close();
+            return rowsAffected;
         }catch ( Exception ex ) {
             ex.printStackTrace();
-            //return false;
+            return -1;
         }
     }
 
     @Override
-    public void delete(Usuario usuario) {
-        SQLiteDatabase db;
+    public int delete(Usuario usuario) {
         try {
             db = ayudanteBaseDeDatos.getWritableDatabase();
             String[] argumentos = {String.valueOf(usuario.getIdUsuario())};
-            String condicion = DbTables.USUARIO_ID + " = ?";
-            db.delete(DbTables.TABLE_USUARIO, condicion, argumentos);
+            rowsAffected = db.delete(DbTables.TABLE_USUARIO, CONDICION_BY_ID, argumentos);
             db.close();
+            return  rowsAffected;
         }catch (Exception ex){
             ex.printStackTrace();
+            return -1;
         }
     }
 
     @Override
     public Usuario read(Usuario usuario) throws SQLException {
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
+        //SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getWritableDatabase();
         return null;
     }
 
@@ -127,15 +136,13 @@ public class UsuarioDAO implements DAO<Usuario> {
     }
 
     public Usuario login(Usuario usuario){
-        SQLiteDatabase db = ayudanteBaseDeDatos.getReadableDatabase();
+        db = ayudanteBaseDeDatos.getReadableDatabase();
         String[] parametrosCondicion = {usuario.getNombreUsuario(), usuario.getPasswordUsuario()};
-        String[] camposRetorno = {
-                DbTables.USUARIO_ID, DbTables.USUARIO_NOMBRE, DbTables.USUARIO_APELLIDO, DbTables.USUARIO_EMAIL, DbTables.USUARIO_PASSWORD};
         String condicion = DbTables.USUARIO_NOMBRE + " = ? AND " + DbTables.USUARIO_PASSWORD + " = ?" ;
         try{
             Cursor cursor = db.query(
                     DbTables.TABLE_USUARIO,
-                    camposRetorno,
+                    CAMPOS_RETURN_ALL,
                     condicion,
                     parametrosCondicion,
                     null,

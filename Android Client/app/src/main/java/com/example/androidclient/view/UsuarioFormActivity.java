@@ -44,9 +44,6 @@ public class UsuarioFormActivity extends AppCompatActivity {
             setTextContent(usuario);
             llInsertUsuario.setVisibility(View.GONE);
             llManageUsuario.setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(),""+usuario, Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getApplicationContext(),"ALL BAD", Toast.LENGTH_SHORT).show();
         }
         btnInsert.setOnClickListener( insert() );
         btnUpdate.setOnClickListener( update() );

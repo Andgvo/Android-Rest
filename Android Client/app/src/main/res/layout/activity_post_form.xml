@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:paddingBottom="20dp"
-                android:text="Información Post"
+                android:text="@string/label_post_title_form"
                 android:textAlignment="center"
                 android:textSize="30dp" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/xetAddTitulo"
+                    android:id="@+id/xetPostAddTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/label_titulo"
@@ -44,15 +44,24 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <Spinner
+                android:id="@+id/xsPostAddCategoria"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/xetAddResumen"
+                    android:id="@+id/xetPostAddResumen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/label_resumen"
+                    android:inputType="text|textMultiLine"
+                    android:lines="3"
+                    android:maxLines="6"
+                    android:minLines="3"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -62,7 +71,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/xetAddContenido"
+                    android:id="@+id/xetPostAddContenido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/label_contenido"
@@ -75,12 +84,46 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/xbnAddPost"
+            <LinearLayout
+                android:id="@+id/xllUsuarioInsert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:text="Ir a WebView" />
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/xbtnPostInsert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorSuccess"
+                    android:text="@string/label_insert" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/xllUsuarioUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/xbtnPostDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorDanger"
+                    android:text="@string/label_delete" />
+
+                <Button
+                    android:id="@+id/xbtnPostUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/label_update" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

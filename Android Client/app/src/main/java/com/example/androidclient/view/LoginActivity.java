@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 if( usuario != null ){
                     Intent itn = new Intent(LoginActivity.this, clase);
                     itn.putExtra("usuario",  usuario);
-                    Toast.makeText(getApplicationContext(),"Bienvenido  "+usuario.getNombreUsuario(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Bienvenido "+usuario.getNombreUsuario(), Toast.LENGTH_SHORT).show();
                     startActivity(itn);
                 }else{
                     Toast.makeText(getApplicationContext(),"ERROR: Revisar usuario y/o password", Toast.LENGTH_SHORT).show();

@@ -12,11 +12,13 @@
     <string name="tab_text_java">Java</string>
     <string name="tab_text_android">Android</string>
     <!-- lables usurio form  -->
+    <string name="label_usuario_title_form">Información Usuario</string>
     <string name="label_nombre">Nombre</string>
     <string name="label_apellido">Apellido</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
     <!-- lables post form  -->
+    <string name="label_post_title_form">Información Post</string>
     <string name="label_titulo">Titulo</string>
     <string name="label_resumen">Resumen</string>
     <string name="label_contenido">Contenido</string>

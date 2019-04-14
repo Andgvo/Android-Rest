@@ -17,7 +17,7 @@ public abstract class DbTables {
     public static final String POST_FECHA = "fechaPost";
     public static final String POST_RESUMEN = "resumenPost";
     public static final String POST_CONTENIDO = "contenidoPost";
-    public static final String POST_URL = "urlPost";
+    public static final String POST_URL = "urlImagenPost";
     public static final String POST_ID_USUARIO =  USUARIO_ID;
     //ENTIDAD COMENTARIO
     public static final String TABLE_COMENTARIO = "Comentario";
