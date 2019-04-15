@@ -67,6 +67,7 @@ public class PostDAO extends Conexion implements DAO<Post>{
             cs.setString(7, post.getUrlImagenPost());
             cs.setInt(8, post.getIdUsuario().getIdUsuario());
             resultado = cs.executeUpdate();
+            System.out.println("Lineas afectadas  = "+resultado);
         } catch(SQLException ex){
             System.err.println(ex);
         } finally {

@@ -17,6 +17,7 @@ import com.example.androidclient.dto.Comentario;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
 import com.example.androidclient.utilerias.AdapterComentario;
+import com.example.androidclient.utilerias.URL;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -87,13 +88,14 @@ public class PostActivity extends AppCompatActivity {
         }
         fabInsertComentario.setOnClickListener( setListener(ComentarioFormActivity.class) );
         fabUpdatePost.setOnClickListener( setListener(PostFormActivity.class) );
-        fabDeltePost.setOnClickListener( deleteComentario() );
+        fabDeltePost.setOnClickListener( deletePost() );
     }
 
-    private View.OnClickListener deleteComentario() {
+    private View.OnClickListener deletePost() {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 dao.delete(post);
+                goToWebView(URL.goServletPost( "DELETE",usuario, post));
                 finish();
             }
         };
@@ -135,6 +137,13 @@ public class PostActivity extends AppCompatActivity {
         tvFecha.setText(FORMATO.format(post.getFechaPost()) + " por "+post.getIdUsuario().getNombreUsuario());
         tvResumen.setText(post.getResumenPost());
         tvContenido.setText(post.getContenidoPost());
+    }
+
+    private boolean goToWebView(String url){
+        Intent itn = new Intent(getApplicationContext(), WebViewActivity.class);
+        itn.putExtra("urlServidor", url);
+        startActivity(itn);
+        return  true;
     }
 
     @Override

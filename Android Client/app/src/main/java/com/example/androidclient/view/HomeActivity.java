@@ -202,6 +202,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(itn);
                 }
             });
+            System.out.println("================ ======== ");
+            System.out.println("listaPost : " + listaPostAux);
             recyclerPost.setAdapter(adapterPost);
         }
     }

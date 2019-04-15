@@ -1,5 +1,6 @@
 package com.example.androidclient.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.example.androidclient.R;
 import com.example.androidclient.dao.PostDAO;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
+import com.example.androidclient.utilerias.URL;
 
 public class PostFormActivity extends AppCompatActivity {
     private static final String[] ITEMS_CATEGORIA = new String[]{"Java", "Android"};
@@ -75,6 +77,7 @@ public class PostFormActivity extends AppCompatActivity {
                         usuario
                 );
                 idPostInsert = dao.create(postAux);
+                goToWebView(URL.goServletPost( "INSERT",usuario, postAux));
                 Toast.makeText(getApplicationContext(),"Agregado correctamente con id "+idPostInsert, Toast.LENGTH_SHORT).show();
             }
         };
@@ -94,7 +97,7 @@ public class PostFormActivity extends AppCompatActivity {
                         usuario
                 );
                 dao.update(postAux);
-                finish();
+                goToWebView(URL.goServletPost( "UPDATE",usuario, postAux));
             }
         };
     }
@@ -104,6 +107,7 @@ public class PostFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dao.delete(post);
+                goToWebView(URL.goServletPost( "DELETE",usuario, post));
             }
         };
     }
@@ -112,5 +116,12 @@ public class PostFormActivity extends AppCompatActivity {
         etTitulo.setText(post.getTituloPost());
         etResumen.setText(post.getResumenPost());
         etContenido.setText(post.getContenidoPost());
+    }
+
+    private boolean goToWebView(String url){
+        Intent itn = new Intent(getApplicationContext(), WebViewActivity.class);
+        itn.putExtra("urlServidor", url);
+        startActivity(itn);
+        return  true;
     }
 }

@@ -5,10 +5,7 @@
  */
 package com.ipn.mx.blog.servlet;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ipn.mx.blog.modelo.dao.ComentarioDAO;
-import com.ipn.mx.blog.modelo.dto.Comentario;
+import com.ipn.mx.blog.modelo.dao.PostDAO;
 import com.ipn.mx.blog.modelo.dto.Post;
 import com.ipn.mx.blog.modelo.dto.Usuario;
 import java.io.IOException;
@@ -25,11 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author andres
  */
-
-public class ComentarioRest extends HttpServlet {
-    
-    private final ComentarioDAO dao = new ComentarioDAO();
-    private final Gson GSON_CONVERT = new GsonBuilder().create();
+public class PostRest extends HttpServlet {
+    private final PostDAO dao = new PostDAO();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,20 +40,15 @@ public class ComentarioRest extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String accion = request.getParameter("txtAccion");
-            if(accion == null){
-                out.print("ERROR");
-            }else switch(accion){
-                case "SELECT":
-                    selectComentario(request, out);
-                    break;
+            switch(accion){
                 case "INSERT":
-                    insertComentario(request, response);
+                    insertPost(request, response, out);
                     break;
                 case "UPDATE":
-                    updateComentario(request, response);
+                    updatePost(request, response, out);
                     break;
                 case "DELETE":
-                    deleteComentario(request, response);
+                    deletePost(request, response, out);
                     break;
                 default: break;
             }
@@ -81,7 +70,7 @@ public class ComentarioRest extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ComentarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -99,7 +88,7 @@ public class ComentarioRest extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ComentarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -113,45 +102,44 @@ public class ComentarioRest extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    
-    private void insertComentario(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    private void insertPost(HttpServletRequest request, HttpServletResponse response, PrintWriter out) throws IOException, SQLException {
         Usuario usuario = new Usuario(Integer.parseInt(request.getParameter("txtIdUsuario")));
-        Post post = new Post(Integer.parseInt( request.getParameter("txtIdPost")));
-        Comentario comentario = new Comentario(
+        Post post = new Post(
+            request.getParameter("txtTitulo"),
+            request.getParameter("txtCategoria"),
+            request.getParameter("txtResumen"),
             request.getParameter("txtContenido"),
-            usuario,
-            post
+            "url :'v",
+            usuario
         );
-        dao.create(comentario);
-        response.sendRedirect("post.jsp?idPost="+post.getIdPost());
+        dao.create(post);
+        out.println("POST AGREGADO CORRECTAMENTE");
     }
 
-    private void updateComentario(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    private void updatePost(HttpServletRequest request, HttpServletResponse response, PrintWriter out) throws IOException, SQLException {
         Usuario usuario = new Usuario(Integer.parseInt(request.getParameter("txtIdUsuario")));
-        Post post = new Post(Integer.parseInt( request.getParameter("txtIdPost")));
-        Comentario comentario = new Comentario(
-            Integer.parseInt(request.getParameter("txtIdComentario")),
+        Post post = new Post(
+            Integer.parseInt( request.getParameter("txtIdPost")),
+            request.getParameter("txtTitulo"),
+            request.getParameter("txtCategoria"),
+            request.getParameter("txtResumen"),
             request.getParameter("txtContenido"),
-            usuario,
-            post
+            "url :'v",
+            usuario
         );
-        dao.update(comentario);
-        response.sendRedirect("post.jsp?idPost="+post.getIdPost());
+        System.out.println("Post: "+post);
+        System.out.println("Usuario: "+usuario);
+        dao.update(post);        
+        out.println("POST ACTUALIZADO CORRECTAMETE");
     }
 
-    private void deleteComentario(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private void deletePost(HttpServletRequest request, HttpServletResponse response, PrintWriter out) throws SQLException, IOException {
         Usuario usuario = new Usuario(Integer.parseInt(request.getParameter("txtIdUsuario")));
-        Post post = new Post(Integer.parseInt(request.getParameter("txtIdPost")));
-        Comentario comentario = new Comentario(
-            Integer.parseInt(request.getParameter("txtIdComentario")),
-            usuario,
-            post
+        Post post = new Post(
+            Integer.parseInt(request.getParameter("txtIdPost")),
+            usuario
         );
-        dao.delete(comentario);
-        response.sendRedirect("post.jsp?idPost="+post.getIdPost());
-    }
-
-    private void selectComentario(HttpServletRequest request, PrintWriter out) throws SQLException {
-        out.println( GSON_CONVERT.toJson(dao.readAll()) );
+        dao.delete(post);
+        out.println("POST ELIMINADO CORRECTAMENTE");
     }
 }

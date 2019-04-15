@@ -1,5 +1,6 @@
 package com.example.androidclient.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +9,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.androidclient.MainActivity;
 import com.example.androidclient.R;
 import com.example.androidclient.dao.UsuarioDAO;
 import com.example.androidclient.dto.Usuario;
+import com.example.androidclient.utilerias.URL;
 
 public class UsuarioFormActivity extends AppCompatActivity {
     private final UsuarioDAO dao = new UsuarioDAO(this);
@@ -61,6 +64,7 @@ public class UsuarioFormActivity extends AppCompatActivity {
                     etPassword.getText().toString()
                 );
                 dao.create(usuarioAux);
+                goToWebView(URL.goServletUsuario( "INSERT",usuarioAux));
             }
         };
     }
@@ -95,5 +99,12 @@ public class UsuarioFormActivity extends AppCompatActivity {
         etApelldio.setText(usuario.getApellidoUsuario());;
         etEmail.setText(usuario.getEmailUsuario());;
         etPassword.setText(usuario.getPasswordUsuario());;
+    }
+
+    private boolean goToWebView(final String url){
+        Intent itn = new Intent(getApplicationContext(), WebViewActivity.class);
+        itn.putExtra("urlServidor", url);
+        startActivity(itn);
+        return  true;
     }
 }

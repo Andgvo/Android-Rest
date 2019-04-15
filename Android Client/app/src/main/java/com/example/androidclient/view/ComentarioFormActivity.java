@@ -1,5 +1,6 @@
 package com.example.androidclient.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.androidclient.dao.ComentarioDAO;
 import com.example.androidclient.dto.Comentario;
 import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
+import com.example.androidclient.utilerias.URL;
 
 public class ComentarioFormActivity extends AppCompatActivity {
 
@@ -68,6 +70,7 @@ public class ComentarioFormActivity extends AppCompatActivity {
                         post
                 );
                 idComentarioInsert = dao.create(ComentarioAux);
+                goToWebView(URL.goServletComentario( "INSERT",usuario, post, ComentarioAux ));
                 Toast.makeText(getApplicationContext(), "Agregado correctamente con id " + idComentarioInsert, Toast.LENGTH_SHORT).show();
             }
         };
@@ -84,7 +87,7 @@ public class ComentarioFormActivity extends AppCompatActivity {
                         post
                 );
                 dao.update(comentarioAux);
-                finish();
+                goToWebView(URL.goServletComentario( "UPDATE",usuario, post, comentarioAux ));
             }
         };
     }
@@ -94,11 +97,19 @@ public class ComentarioFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dao.delete(comentario);
+                goToWebView(URL.goServletComentario( "DELETE",usuario, post, comentario ));
             }
         };
     }
 
     private void setTextContent(Comentario comentario) {
         etContenido.setText(comentario.getContenidoComentario());
+    }
+
+    private boolean goToWebView(String url){
+        Intent itn = new Intent(getApplicationContext(), WebViewActivity.class);
+        itn.putExtra("urlServidor", url);
+        startActivity(itn);
+        return  true;
     }
 }
