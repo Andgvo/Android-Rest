@@ -43,7 +43,7 @@ public class URL {
                 .append("&txtIdComentario=").append(comentario.getIdComentario())
                 .append("&txtIdPost=").append(post.getIdPost())
                 .append("&txtIdUsuario=").append(usuario.getIdUsuario())
-                .append("&txtContenido=").append(post.getContenidoPost());
+                .append("&txtContenido=").append(comentario.getContenidoComentario());
         return sb.toString();
     }
 }
