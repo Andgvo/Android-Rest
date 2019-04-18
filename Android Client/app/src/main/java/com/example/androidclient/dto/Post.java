@@ -161,6 +161,17 @@ public class Post implements Serializable {
         return true;
     }
 
+    public String toListAttributes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("idPost = ").append(idPost)
+                .append("\ntitulo = ").append(tituloPost)
+                .append("\ncategoria = ").append(categoriaPost)
+                .append("\nresumen =").append(resumenPost)
+                .append("\ncontenido = ").append(contenidoPost)
+                .append("\nidUsuario = ").append(idUsuario.getIdUsuario());
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -172,5 +183,6 @@ public class Post implements Serializable {
                 .append("\t idUsuario = ").append(idUsuario);
         return sb.toString();
     }
+
 
 }

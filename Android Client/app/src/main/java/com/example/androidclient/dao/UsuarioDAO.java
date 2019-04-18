@@ -91,52 +91,42 @@ public class UsuarioDAO implements DAO<Usuario> {
 
     @Override
     public List<Usuario> readAll() throws SQLException {
-        ArrayList<Usuario> Usuarios = new ArrayList<>();
-        // readable porque no vamos a modificar, solamente leer
-        SQLiteDatabase baseDeDatos = ayudanteBaseDeDatos.getReadableDatabase();
-        // SELECT nombre, edad, id
-        String[] columnasAConsultar = {"idUsuario", "nombreUsuario", "apellidoUsuario", "emailUsuario", "passwordUsuario"};
-        Cursor cursor = baseDeDatos.query(
-                DbTables.TABLE_USUARIO,//from Usuarios
-                columnasAConsultar,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        if (cursor == null) {
-            /*
-                Salimos aquí porque hubo un error, regresar
-                lista vacía
-             */
-            return Usuarios;
-
+        List<Usuario> usuarios = new ArrayList<>();
+        String[] parametros = {};
+        Usuario usuario; // ObjetoAuxiliar
+        try {
+            db = ayudanteBaseDeDatos.getReadableDatabase();
+            Cursor cursor = db.query(
+                    DbTables.TABLE_USUARIO,
+                    CAMPOS_RETURN_ALL,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            //Hubo un error
+            if (cursor == null) return null;
+            // Si no hay datos, igualmente regresamos la lista vacía
+            if (!cursor.moveToFirst()) return usuarios;
+            do {
+                usuario = new Usuario(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4));
+                usuarios.add( usuario );
+            } while (cursor.moveToNext());
+            // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
+            cursor.close();
+            db.close();
+            return usuarios;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            db.close();
+            return null;
         }
-        // Si no hay datos, igualmente regresamos la lista vacía
-        if (!cursor.moveToFirst()) return Usuarios;
-
-        // En caso de que sí haya, iteramos y vamos agregando los
-        // datos a la lista de Usuarios
-        do {
-            // El 0 es el número de la columna, como seleccionamos
-            // nombre, edad,id entonces el nombre es 0, edad 1 e id es 2
-            int idUsuario = cursor.getInt(0);
-            String nombreUsuario = cursor.getString(1);
-            String apelldioUsuario = cursor.getString(2);
-            String emailUsuario = cursor.getString(3);
-            String passwordUsuario = cursor.getString(4);
-
-            Usuario UsuarioObtenidaDeBD = new Usuario(
-                    idUsuario, nombreUsuario, apelldioUsuario, emailUsuario, passwordUsuario);
-            Usuarios.add(UsuarioObtenidaDeBD);
-        } while (cursor.moveToNext());
-
-        // Fin del ciclo. Cerramos cursor y regresamos la lista de Usuarios :)
-        cursor.close();
-        db.close();
-        return Usuarios;
     }
 
     public Usuario login(Usuario usuario){

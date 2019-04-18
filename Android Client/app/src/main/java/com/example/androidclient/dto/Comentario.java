@@ -97,9 +97,18 @@ public class Comentario implements Serializable {
         this.idPost = idPost;
     }
 
+    public String toListAttributes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("idComentario = ").append(idComentario)
+                .append("\ntitulo = ").append(fechaComentario)
+                .append("\ncategoria = ").append(contenidoComentario)
+                .append("\nidUsuario = ").append(idUsuario.getIdUsuario())
+                .append("\nidPost = ").append( idPost.getIdPost() );
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         return "com.ipn.mx.blog.modelo.dto.Comentario[ idComentario=" + idComentario + " ]";
     }
-
 }

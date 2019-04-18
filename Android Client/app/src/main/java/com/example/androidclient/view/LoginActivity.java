@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtPassword;
     private Button btnLogin;
     private Button btnSignin;
-
+    private Button btnShowDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         txtPassword = (EditText) findViewById(R.id.xetPassword);
         btnLogin = (Button) findViewById(R.id.xbnLogin);
         btnSignin = (Button) findViewById(R.id.xbnSignin);
+        btnShowDB = (Button) findViewById(R.id.xbnShowDB);
         btnLogin.setOnClickListener( setListenerLogin( HomeActivity.class ) );
         btnSignin.setOnClickListener( setListener( UsuarioFormActivity.class ) );
+        btnShowDB.setOnClickListener( setListener( ShowDB.class ));
     }
 
     private View.OnClickListener setListenerLogin(final Class<?> clase){

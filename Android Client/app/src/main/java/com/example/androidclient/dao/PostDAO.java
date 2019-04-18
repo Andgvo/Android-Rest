@@ -137,7 +137,7 @@ public class PostDAO implements DAO<Post>{
             if (cursor == null) return null;
             // Si no hay datos, igualmente regresamos la lista vacía
             if (!cursor.moveToFirst()) return posts;
-            while (cursor.moveToNext()) {
+            do {
                 Post PostObtenidaDeBD = new Post(
                         cursor.getInt(0),
                         cursor.getString(1),
@@ -149,7 +149,7 @@ public class PostDAO implements DAO<Post>{
                         new Usuario(cursor.getInt(7), cursor.getString(8))
                 );
                 posts.add(PostObtenidaDeBD);
-            }
+            } while (cursor.moveToNext());
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Posts :)
             cursor.close();
             db.close();

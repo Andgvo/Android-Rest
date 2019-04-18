@@ -136,7 +136,7 @@ public class ComentarioDAO implements DAO<Comentario>{
             if (cursor == null) return null;
             // Si no hay datos, igualmente regresamos la lista vacía
             if (!cursor.moveToFirst()) return comentarios;
-            while (cursor.moveToNext()) {
+            do  {
                 Comentario ComentarioObtenidaDeBD = new Comentario(
                         cursor.getInt(0),
                         new Date(cursor.getString(1).replace("-","/")),
@@ -145,7 +145,7 @@ public class ComentarioDAO implements DAO<Comentario>{
                         new Post(cursor.getInt(4))
                 );
                 comentarios.add(ComentarioObtenidaDeBD);
-            }
+            } while (cursor.moveToNext());
             // Fin del ciclo. Cerramos cursor y regresamos la lista de Comentarios :)
             cursor.close();
             db.close();

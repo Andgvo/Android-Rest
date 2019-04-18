@@ -106,6 +106,16 @@ public class Usuario implements Serializable {
         this.comentarioList = comentarioList;
     }
 
+    public String toListAttributes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("idUsuario: ").append(idUsuario)
+                .append("\nnombre: ").append(nombreUsuario)
+                .append("\napellido: ").append(apellidoUsuario)
+                .append("\nemail: ").append(emailUsuario)
+                .append("\npassword: ").append(passwordUsuario);
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -3,6 +3,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/colorBaseText</item>
         <item name="colorPrimary">#fff</item>
         <item name="colorPrimaryDark">#fff</item>
         <item name="colorAccent">#26c6da</item>
@@ -11,6 +12,7 @@
         <item name="colorError">#F44336</item>
         <!-- Buttons color -->
         <item name="android:buttonStyle">@style/ButtonColor</item>
+
     </style>
 
     <style name="ButtonColor" parent="@android:style/Widget.Button">
@@ -22,4 +24,11 @@
         <item name="android:radius">@dimen/button_radios</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
+
+    <style name="Style_title">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+
 </resources>

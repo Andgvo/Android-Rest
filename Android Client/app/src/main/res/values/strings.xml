@@ -4,6 +4,7 @@
     <!-- labels Activity  Login -->
     <string name="label_btn_login">Iniciar Sesión</string>
     <string name="label_btn_sigin">Registrarse</string>
+    <string name="label_btn_show_db">Mostrar BD</string>
     <!-- lables menu home  -->
     <string name="action_perfil">Perfil</string>
     <string name="section_format">Post %1$d</string>
@@ -28,4 +29,9 @@
     <string name="label_insert">Agregar</string>
     <string name="label_update">Actualizar</string>
     <string name="label_delete">Eliminar</string>
+    <!-- Database labels -->
+    <string name="label_title_usuario">Usuarios</string>
+    <string name="label_title_post">Post</string>
+    <string name="label_title_comentarios">Comentarios</string>
+
 </resources>

@@ -94,7 +94,8 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="@dimen/fab_margin"
             android:visibility="gone"
-            app:backgroundTint="@color/colorDanger" />
+            app:backgroundTint="@color/colorDanger"
+            app:srcCompat="@drawable/ic_delete_black_24dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/xfabUpdatePost"
@@ -103,7 +104,8 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="@dimen/fab_margin"
             android:visibility="gone"
-            app:backgroundTint="@color/colorPrimary" />
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_edit_black_24dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/xfabInsertComentario"
@@ -111,7 +113,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="@color/colorSuccess" />
+            app:backgroundTint="@color/colorSuccess"
+            app:srcCompat="@drawable/ic_add_black_24dp"/>
 
     </LinearLayout>
 

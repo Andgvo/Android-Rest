@@ -5,7 +5,7 @@ import com.example.androidclient.dto.Post;
 import com.example.androidclient.dto.Usuario;
 
 public class URL {
-    public static String dominioServidor = "http://192.168.0.9:8080";
+    public static String dominioServidor = "http://10.100.74.159:8080";
     private static final String SERVIDOR = "/JavaServer";
     private static final String USUARIO_SERVLET  = "/UsuarioRest";
     private static final String POST_SERVLET  = "/PostRest";
