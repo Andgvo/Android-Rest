@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.androidclient.utilerias.URL;
 import com.example.androidclient.view.LoginActivity;
 import com.example.androidclient.view.WebViewActivity;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent itn = new Intent(MainActivity.this, clase);
                 itn.putExtra("urlServidor",etUrl.getText().toString());
+                URL.dominioServidor = etUrl.getText().toString();
                 startActivity(itn);
             }
         };

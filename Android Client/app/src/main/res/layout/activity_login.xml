@@ -6,73 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".view.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="@android:dimen/notification_large_icon_width"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/button_intern_padding_vertical"
+        tools:ignore="MissingConstraints">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="40dp"
-            android:paddingBottom="60dp"
-            android:text="Inicia Sesión"
-            android:textAlignment="center"
-            android:textSize="35dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@android:dimen/notification_large_icon_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/xetUsuario"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Usuario"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:paddingTop="20dp"
+                android:paddingBottom="60dp"
+                android:text="Inicia Sesión"
+                android:textAlignment="center"
+                android:textSize="35dp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/xetPassword"
+                <EditText
+                    android:id="@+id/xetUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Usuario"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/xetPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/xbnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="10dp"
+                android:text="@string/label_btn_login" />
 
-        <Button
-            android:id="@+id/xbnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/label_btn_login" />
+            <Button
+                android:id="@+id/xbnSignin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSuccess"
+                android:layout_marginBottom="10dp"
+                android:text="@string/label_btn_sigin" />
 
-        <Button
-            android:id="@+id/xbnSignin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorSuccess"
-            android:layout_marginBottom="10dp"
-            android:text="@string/label_btn_sigin" />
+            <Button
+                android:id="@+id/xbnShowDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/design_default_color_primary"
+                android:layout_marginBottom="10dp"
+                android:text="@string/label_btn_show_db" />
 
-        <Button
-            android:id="@+id/xbnShowDB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary"
-            android:text="@string/label_btn_show_db" />
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
